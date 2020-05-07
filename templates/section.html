@@ -13,9 +13,11 @@
     {% else %}
       {% if section.pages %}
         {% set all_tags = [] %}
+        {% set total_word_count = 0 %}
         {% for page in section.pages %}
           {% if loop.last %}{% set_global first_post = page.content %}{% endif %}
           {% set_global all_tags =  page.taxonomies.tags | concat(with=all_tags) %}
+          {% set_global total_word_count = page.word_count + total_word_count %}
         {% endfor %}
         {% for tag in all_tags | unique %}
           <span class="tag">{{ tag }}</span>
@@ -26,6 +28,14 @@
   </div>
 
   <div class="content">
+    <p class="word_count">
+      {% if total_word_count %}
+        {{total_word_count}} words
+      {% else %}
+        {{ section.word_count }} words ({{ section.reading_time}} min)
+      {% endif %}
+    </p>
+
     {{ section.content | safe }}
 
     {% if section.pages %}

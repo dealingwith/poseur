@@ -12,6 +12,7 @@
     {% endif %}
   </div>
   <div class="content">
+    <p class="word_count">{{ page.word_count }} words ({{ page.reading_time}} min)</p>
     {{ page.content | safe }}
     {% if page.earlier or page.later or page.lighter or page.heavier %}
     <div class="post-nav">
