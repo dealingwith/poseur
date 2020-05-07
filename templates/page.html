@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <header>
+    <a href="../">{{ page.title }}</a>
+  </header>
+  <div class="tags">
+    {% if page.taxonomies.tags %}
+      {% for tag in page.taxonomies.tags %}
+        <span class="tag">{{ tag }}</span>
+      {% endfor %}
+    {% endif %}
+  </div>
+  <div class="content">
+    {{ page.content | safe }}
+    {% if page.earlier or page.later or page.lighter or page.heavier %}
+    <div class="post-nav">
+      {% if page.earlier %}
+        <a class="previous" href="{{ page.earlier.permalink }}">‹ {{ page.earlier.title }}</a>
+      {% else %}
+        <div class="previous"></div>
+      {% endif %}
+      {% if page.later %}
+        <a class="next" href="{{ page.later.permalink }}">{{ page.later.title }} ›</a>
+      {% endif %}
+    </div>
+    {% endif %}
+  </div>
+{% endblock content %}

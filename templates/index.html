@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <header>
+    P.O.S.E.U.R.
+  </header>
+  <div class="content">
+    {% for current in section.subsections %}
+      {% set current = get_section(path=current) %}
+      <div class="main-menu-link" >
+        <a href="{{ current.permalink | safe }}">{{ current.title | safe }}</a>
+      </div>
+    {% endfor %}
+  </div>
+{% endblock content %}

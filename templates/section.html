@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <header>
+    <a href="../">{{ section.title }}</a>
+  </header>
+
+  <div class="tags">
+    {% if section.extra.tags %}
+      {% for tag in section.extra.tags %}
+        <span class="tag">{{ tag }}</span>
+      {% endfor %}
+    {% else %}
+      {% if section.pages %}
+        {% set all_tags = [] %}
+        {% for page in section.pages %}
+          {% if loop.last %}{% set_global first_post = page.content %}{% endif %}
+          {% set_global all_tags =  page.taxonomies.tags | concat(with=all_tags) %}
+        {% endfor %}
+        {% for tag in all_tags | unique %}
+          <span class="tag">{{ tag }}</span>
+        {% endfor %}
+      {% endif %}
+    {% endif %}
+
+  </div>
+
+  <div class="content">
+    {{ section.content | safe }}
+
+    {% if section.pages %}
+      {% set all_tags = [] %}
+      <div>{{first_post | safe}}</div>
+      <p>Continue reading:</p>
+      {% for post in section.pages | reverse %}
+        {% if loop.first %}{% continue %}{% endif %}
+        <div class="main-menu-link" >
+          <a href="{{ post.permalink | safe }}">{{ post.title | safe }}</a>
+        </div>
+      {% endfor %}
+    {% endif %}
+  </div>
+{% endblock content %}
