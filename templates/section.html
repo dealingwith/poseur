@@ -14,10 +14,12 @@
       {% if section.pages %}
         {% set all_tags = [] %}
         {% set total_word_count = 0 %}
+        {% set total_reading_time = 0 %}
         {% for page in section.pages %}
           {% if loop.last %}{% set_global first_post = page.content %}{% endif %}
           {% set_global all_tags =  page.taxonomies.tags | concat(with=all_tags) %}
           {% set_global total_word_count = page.word_count + total_word_count %}
+          {% set_global total_reading_time = page.reading_time + total_reading_time %}
         {% endfor %}
         {% for tag in all_tags | unique %}
           <span class="tag">{{ tag }}</span>
@@ -30,7 +32,7 @@
   <div class="content">
     <p class="word_count">
       {% if total_word_count %}
-        {{total_word_count}} words
+        {{total_word_count}} words ({{total_reading_time}} min)
       {% else %}
         {{ section.word_count }} words ({{ section.reading_time}} min)
       {% endif %}
@@ -39,7 +41,6 @@
     {{ section.content | safe }}
 
     {% if section.pages %}
-      {% set all_tags = [] %}
       <div>{{first_post | safe}}</div>
       <p>Continue reading:</p>
       {% for post in section.pages | reverse %}
